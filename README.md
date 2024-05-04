@@ -58,4 +58,42 @@ The WebSocket protocol is a computer communications protocol, providing full-dup
 
  The server is binding to a TCP listener on a specific port (in this case, 8080), and the client is connecting to the server using the WebSocket protocol at the same port. thus it apply websocker protocol
 
+
+ 2.3 Small changes. Add some information to client
+
+Server:
+
+![alt text](image-4.png)
+
+Client 1:
+![alt text](image-5.png)
+
+Client 2:
+![alt text](image-6.png)
+
+CLient 3:
+![alt text](image-7.png)
+
+In this new code first we modified the client code like this  
+                match incoming {
+                    Some(Ok(msg)) => {
+                        if let Some(text) = msg.as_text() {
+                            println!("Kevin's Computer - From server: {}", text);
+                        }
+                    },
+
+We modified it so we can display the sender information along with the message content.
+This modification allows each client to show messages along with details about the sender, providing context about the origin of each message.
+
+In the server side with modify 
+
+                        println!("From client {addr:?} {text:?}");
+                            let newChat = addr.to_string() + ": " + text;
+                            bcast_tx.send(newChat.into())?;
+
+we need to show information about the sender (in this case, the client's IP address and port) to the message before broadcasting it to all clients.
+This modification ensures that each client receives messages along with details about who sent the message.
+
+
+
 </details>
